@@ -29,7 +29,6 @@ def write_to_csv(results, filename):
         'designation', 'name', 'diameter_km', 'potentially_hazardous'
     )
     # TODO: Write the results to a CSV file, following the specification in the instructions.
-    print(results)
     with open(filename, 'w') as cad_csv:
         writer = csv.DictWriter(cad_csv, fieldnames=fieldnames)
         writer.writeheader()
@@ -62,19 +61,17 @@ def write_to_json(results, filename):
 
     for approach in results:
         approach_data = {
-            'datetime_utc': datetime_to_str(approach.time),  # Format the datetime using the helper
+            'datetime_utc': datetime_to_str(approach.time),
             'distance_au': approach.distance,
             'velocity_km_s': approach.velocity,
             'neo': {
                 'designation': approach.neo.designation,
-                'name': approach.neo.name if approach.neo.name is not None else '',  # Empty string if name is None
-                'diameter_km': approach.neo.diameter if approach.neo.diameter is not None else float('nan'),  # NaN if diameter is missing
-                'potentially_hazardous': 'true' if approach.neo.hazardous else 'false',
+                'name': approach.neo.name if approach.neo.name is not None else '',
+                'diameter_km': approach.neo.diameter if approach.neo.diameter is not None else float('nan'),
+                'potentially_hazardous': bool(approach.neo.hazardous)
             }
         }
-        # Append the dictionary to the data list
         cad_list.append(approach_data)
 
-    # Write the data list to the JSON file
     with open(filename, 'w') as jsonfile:
-        json.dump(cad_list, jsonfile, indent=4)  # Write JSON with indentation for readability
+        json.dump(cad_list, jsonfile, indent=4)
