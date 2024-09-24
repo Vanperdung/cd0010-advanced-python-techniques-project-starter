@@ -38,6 +38,7 @@ class AttributeFilter:
     Concrete subclasses can override the `get` classmethod to provide custom
     behavior to fetch a desired attribute from the given `CloseApproach`.
     """
+    
     def __init__(self, op, value):
         """Construct a new `AttributeFilter` from an binary predicate and a reference value.
 
@@ -69,31 +70,110 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Return a string representation of the object.
+
+        This method returns a string that shows the class name, the operator used in the object,
+        and the value. It's useful for debugging and provides a detailed representation of the object.
+
+        :return: A string representation of the object, including the operator and value.
+        """
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 class DateFilter(AttributeFilter):
+    """A child class for date-filters.
+
+    It only contains one class method for getting the value.
+    """
+    
     @classmethod
     def get(cls, approach):
+        """Get the date of the close approach.
+
+        This class method extracts the `date` from the `time` attribute of the `approach` object,
+        which is a `CloseApproach` instance. The `time` attribute is a `datetime`, and this method
+        returns the `date` portion of that `datetime`.
+
+        :param approach: A `CloseApproach` object from which to extract the date.
+        :return: A `date` object representing the date of the close approach.
+        """
         return approach.time.date()
 
 class DistanceFilter(AttributeFilter):
+    """A filter for the distance of a close approach.
+
+    This filter checks the `distance` attribute of a `CloseApproach` object.
+    It is used to filter close approaches based on the distance from Earth, expressed in astronomical units (AU).
+    """
+    
     @classmethod
     def get(cls, approach):
+        """Get the distance of the close approach.
+
+        This method extracts the `distance` attribute from the `approach` object,
+        which represents the distance in astronomical units (AU) of the close approach.
+
+        :param approach: A `CloseApproach` object from which to extract the distance.
+        :return: A float representing the distance in AU.
+        """
         return approach.distance
 
 class VelocityFilter(AttributeFilter):
+    """A filter for the velocity of a close approach.
+
+    This filter checks the `velocity` attribute of a `CloseApproach` object.
+    It is used to filter close approaches based on the velocity of the NEO during the approach, expressed in kilometers per second.
+    """
+    
     @classmethod
     def get(cls, approach):
+        """Get the velocity of the close approach.
+
+        This method extracts the `velocity` attribute from the `approach` object,
+        which represents the velocity of the object during the close approach in kilometers per second.
+
+        :param approach: A `CloseApproach` object from which to extract the velocity.
+        :return: A float representing the velocity in km/s.
+        """
         return approach.velocity
 
 class DiameterFilter(AttributeFilter):
+    """A filter for the diameter of a near-Earth object (NEO).
+
+    This filter checks the `diameter` attribute of the `neo` associated with a `CloseApproach` object.
+    It is used to filter close approaches based on the NEO's diameter, expressed in kilometers.
+    """
+    
     @classmethod
     def get(cls, approach):
+        """Get the diameter of the near-Earth object (NEO).
+
+        This method extracts the `diameter` attribute from the `neo` associated
+        with the `approach` object. The `diameter` represents the diameter of
+        the NEO in kilometers.
+
+        :param approach: A `CloseApproach` object from which to extract the NEO's diameter.
+        :return: A float representing the diameter in kilometers, or `None` if unknown.
+        """
         return approach.neo.diameter
 
 class HazardousFilter(AttributeFilter):
+    """A filter for the hazardous status of a near-Earth object (NEO).
+
+    This filter checks the `hazardous` attribute of the `neo` associated with a `CloseApproach` object.
+    It is used to filter close approaches based on whether the NEO is potentially hazardous.
+    """
+    
     @classmethod
     def get(cls, approach):
+        """Check if the near-Earth object (NEO) is potentially hazardous.
+
+        This method extracts the `hazardous` attribute from the `neo` associated
+        with the `approach` object. It returns a boolean indicating whether the
+        NEO is considered potentially hazardous.
+
+        :param approach: A `CloseApproach` object from which to extract the hazardous status.
+        :return: A boolean indicating if the NEO is hazardous (`True` or `False`).
+        """
         return approach.neo.hazardous
 
 def create_filters(

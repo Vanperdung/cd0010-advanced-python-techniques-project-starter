@@ -49,6 +49,14 @@ class NearEarthObject:
         self.approaches = []
 
     def convert_to_float(self, val):
+        """Convert a value to a float, handling None or invalid input gracefully.
+
+        This method attempts to convert the input `value` to a float. If the value is None
+        or cannot be converted to a float, it returns `float('nan')`.
+
+        :param value: The value to be converted to a float. It can be a number, string, or None.
+        :return: A float representation of the value, or `float('nan')` if conversion fails.
+        """
         if val == None or val == '':
             return float('nan')
         else:
@@ -86,6 +94,7 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
+    
     def __init__(self, **info):
         """Create a new `CloseApproach`.
 
@@ -100,6 +109,14 @@ class CloseApproach:
         self.neo = None
         
     def convert_to_float(self, val):
+        """Convert a value to a float, handling None or invalid input gracefully.
+
+        This method attempts to convert the input `value` to a float. If the value is None
+        or cannot be converted to a float, it returns `float('nan')`.
+
+        :param value: The value to be converted to a float. It can be a number, string, or None.
+        :return: A float representation of the value, or `float('nan')` if conversion fails.
+        """
         if val == None or val == '':
             return float('nan')
         else:
